@@ -1,9 +1,11 @@
+import { Container } from "../../components/container"
+
 export function Dashboard() {
 
   return (
-    <div>
+    <Container>
       <h1>Pagina Dashboard</h1>
       
-    </div>
+    </Container>
   )
-}
+}   

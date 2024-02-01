@@ -1,10 +1,9 @@
 import { useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
-import { UserCircleIcon } from '@heroicons/react/24/outline'
 import { Link } from "react-router-dom"
 
 export function Header() {
-  const {signed, loadingAuth} = useContext(AuthContext)
+  const { signed, loadingAuth } = useContext(AuthContext)
 
   return (
     <header className="bg-white">
@@ -16,16 +15,26 @@ export function Header() {
         </div>
 
         {!loadingAuth && signed && (
-          <Link to="/dashboard">
-            <UserCircleIcon className="h-8 w-8 flex-none text-gray-800 stroke-1" aria-hidden="true" />
-          </Link>
+            <button
+              className="flex justify-center rounded-md bg-gray-900 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-800"
+
+            >
+              <Link to="/dashboard" className="text-sm font-semibold leading-5 text-white">
+                Dashboard
+              </Link>
+            </button>
+
         )}
 
         {!loadingAuth && !signed && (
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <Link to="/login" className="text-sm font-semibold leading-6 text-gray-900">
-              Entrar <span aria-hidden="true">&rarr;</span>
-            </Link>
+            <button
+              className="flex justify-center rounded-md bg-red-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-600"
+            >
+              <Link to="/login" className="text-sm font-semibold leading-5 text-white">
+                Entrar <span aria-hidden="true">&rarr;</span>
+              </Link>
+            </button>
           </div>
         )}
 
