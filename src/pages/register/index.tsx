@@ -1,8 +1,11 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Input } from "../../components/input";
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+
+import { auth } from "../../services/firebaseConnection"
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
 
 const schema = z.object({
   name: z.string().min(1, { message: "O campo nome é obrigatório" }),
@@ -13,13 +16,28 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>
 
 export function Register() {
+  const navigate = useNavigate()
+
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
     mode: "onChange"
   })
 
-  function onSubmit(data: FormData) {
-    console.log(data)
+  async function onSubmit(data: FormData) {
+    createUserWithEmailAndPassword(auth, data.email, data.password)
+    .then(async (user)=> {
+      await updateProfile(user.user, {
+        displayName: data.name
+      })
+
+      console.log("cadastrado com sucesso")
+      navigate('/dashboard', {replace: true})
+    })
+    .catch((error)=>{
+      console.log("Erro ao cadastrar este usuario")
+      console.log(error)
+    })
+    
   }
 
   return (
