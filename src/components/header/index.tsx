@@ -1,9 +1,10 @@
+import { useContext } from 'react';
+import { AuthContext } from '../../contexts/AuthContext';
 import { UserCircleIcon } from '@heroicons/react/24/outline'
 import { Link } from "react-router-dom"
 
 export function Header() {
-  const signed = true;
-  const loadingAuth = false;
+  const {signed, loadingAuth} = useContext(AuthContext)
 
   return (
     <header className="bg-white">
