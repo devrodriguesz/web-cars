@@ -16,10 +16,10 @@ export function Header() {
 
         {!loadingAuth && signed && (
             <button
-              className="flex justify-center rounded-md bg-gray-900 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-800"
+              className="flex justify-center rounded-md border border-gray-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:scale-105 transition-all"
 
             >
-              <Link to="/dashboard" className="text-sm font-semibold leading-5 text-white">
+              <Link to="/dashboard" className="text-sm font-semibold leading-5 text-black">
                 Dashboard
               </Link>
             </button>
@@ -27,11 +27,11 @@ export function Header() {
         )}
 
         {!loadingAuth && !signed && (
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+          <div className="flex lg:flex-1 lg:justify-end">
             <button
-              className="flex justify-center rounded-md bg-red-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-600"
-            >
-              <Link to="/login" className="text-sm font-semibold leading-5 text-white">
+              className="flex justify-center rounded-md border border-gray-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:scale-105 transition-all"
+              >
+              <Link to="/login" className="text-sm font-semibold leading-5 text-black">
                 Entrar <span aria-hidden="true">&rarr;</span>
               </Link>
             </button>
