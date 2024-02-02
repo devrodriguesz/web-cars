@@ -6,6 +6,7 @@ import {
   query,
   orderBy,
   getDocs,
+  where,
 } from "firebase/firestore";
 import { db } from "../../services/firebaseConnection";
 
@@ -29,40 +30,72 @@ interface CarImageProps {
 export function Home() {
   const [cars, setCars] = useState<CarsProps[]>([])
   const [loadImages, setLoadImages] = useState<string[]>([])
+  const [input, setInput] = useState("") 
 
   useEffect(() => {
-    function loadCars() {
-      const carsRef = collection(db, "cars")
-      const queryRef = query(carsRef, orderBy("created", "desc"))
-
-      getDocs(queryRef)
-        .then((snapshot) => {
-          let listCars = [] as CarsProps[];
-
-          snapshot.forEach(doc => {
-            listCars.push({
-              id: doc.id,
-              name: doc.data().name,
-              year: doc.data().year,
-              km: doc.data().km,
-              city: doc.data().city,
-              price: doc.data().price,
-              images: doc.data().images,
-              uid: doc.data().uid,
-            })
-          })
-
-          setCars(listCars)
-        })
-
-    }
-
     loadCars();
-
   }, [])
 
-  function handleImageLoad(id: string){
+  function loadCars() {
+    const carsRef = collection(db, "cars")
+    const queryRef = query(carsRef, orderBy("created", "desc"))
+
+    getDocs(queryRef)
+      .then((snapshot) => {
+        let listCars = [] as CarsProps[];
+
+        snapshot.forEach(doc => {
+          listCars.push({
+            id: doc.id,
+            name: doc.data().name,
+            year: doc.data().year,
+            km: doc.data().km,
+            city: doc.data().city,
+            price: doc.data().price,
+            images: doc.data().images,
+            uid: doc.data().uid,
+          })
+        })
+
+        setCars(listCars)
+      })
+  }
+
+  function handleImageLoad(id: string) {
     setLoadImages((prevImageLoaded) => [...prevImageLoaded, id])
+  }
+
+  async function handleSearchCar(){
+    if(input === ""){
+      loadCars();
+      return
+    }
+    
+    setCars([]);
+    setLoadImages([]);
+
+    const q = query(collection(db, "cars"), 
+    where("name", ">=", input.toUpperCase()),
+    where("name", "<=", input.toUpperCase() + "\uf8ff")
+    )
+
+    const querySnapshot = await getDocs(q)
+
+    let listCars = [] as CarsProps[];
+    querySnapshot.forEach((doc) => {
+      listCars.push({
+        id: doc.id,
+        name: doc.data().name,
+        year: doc.data().year,
+        km: doc.data().km,
+        city: doc.data().city,
+        price: doc.data().price,
+        images: doc.data().images,
+        uid: doc.data().uid,
+      })
+    })
+
+    setCars(listCars)
   }
 
   return (
@@ -71,9 +104,12 @@ export function Home() {
         <input
           className="block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 outline-none"
           placeholder="Digite o nome do carro ..."
+          value={input}
+          onChange={ (e) => setInput(e.target.value) }
         />
         <button
           className="flex justify-center rounded-md bg-red-500 px-8 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-600"
+          onClick={handleSearchCar}
         >
           Buscar
         </button>
@@ -88,16 +124,16 @@ export function Home() {
         {cars.map(car => (
           <Link key={car.id} to={`/car-details/${car.id}`}>
             <section className="w-full bg-white rounded-lg">
-            <div 
-              className="w-full h-72 max-h-72 rounded-lg bg-slate-200"
-              style={{ display: loadImages.includes(car.id) ? "none" : "block"}}
-              >  
-            </div>
+              <div
+                className="w-full h-72 max-h-72 rounded-lg bg-slate-200"
+                style={{ display: loadImages.includes(car.id) ? "none" : "block" }}
+              >
+              </div>
               <img
                 className="w-full rounded-lg mb-2 max-h-72 hover:scale-105 transition-all"
                 src={car.images[0].url}
                 alt="carro"
-                onLoad={ () => handleImageLoad(car.id) }
+                onLoad={() => handleImageLoad(car.id)}
                 style={{ display: loadImages.includes(car.id) ? "block" : "none" }}
               />
               <p className="font-bold mt-1 mb-2 px-2">{car.name}</p>
