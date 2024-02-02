@@ -2,6 +2,8 @@ import { useEffect, useState, useContext } from "react"
 import { Container } from "../../components/container"
 import { Panel } from "../../components/panel"
 
+import { useNavigate } from "react-router-dom"
+
 import {
   collection,
   getDocs,
@@ -35,6 +37,7 @@ export function Dashboard() {
   const [cars, setCars] = useState<CarsProps[]>([])
   const [loadImages, setLoadImages] = useState<string[]>([])
   const { user } = useContext(AuthContext)
+  const navigate = useNavigate()
 
   useEffect(() => {
 
@@ -105,6 +108,19 @@ export function Dashboard() {
       <h1 className="font-medium text-center mt-6 text-3xl mb-6">
         Meus veículos cadastrados
       </h1>
+
+      <div className="w-full flex justify-end mb-3">
+        <button
+          className="bg-black flex gap-2 items-center justify-center rounded-md border px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:scale-105 transition-all"
+          onClick={() => navigate('/dashboard/new-car')}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+          Novo veículo
+
+        </button>
+      </div>
 
       <main className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {cars.map(car => (
