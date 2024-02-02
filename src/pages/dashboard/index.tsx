@@ -102,8 +102,8 @@ export function Dashboard() {
     <Container>
       <Panel />
 
-      <h1 className="font-bold text-center mt-6 text-3xl mb-6">
-        Meus carros cadastrados
+      <h1 className="font-medium text-center mt-6 text-3xl mb-6">
+        Meus veículos cadastrados
       </h1>
 
       <main className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
