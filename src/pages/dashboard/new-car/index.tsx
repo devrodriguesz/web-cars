@@ -8,6 +8,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { AuthContext } from "../../../contexts/AuthContext"
 import { v4 as uuidV4 } from "uuid"
 
+import toast from "react-hot-toast"
+
 import { storage, db } from "../../../services/firebaseConnection"
 import {
   ref,
@@ -58,7 +60,7 @@ export function NewCar() {
         await handleUpload(image)
       }
       else {
-        alert('Envie uma imagem no formato jpeg ou png')
+        toast.error('Envie uma imagem no formato jpeg ou png')
       }
       return;
     }
@@ -85,6 +87,7 @@ export function NewCar() {
           }
 
           setCarImages((images) => [...images, imageItem])
+          toast.success("Imagem cadastrada com sucesso!")
 
         })
       })
@@ -93,7 +96,7 @@ export function NewCar() {
 
   function onSubmit(data: FormData) {
     if (carImages.length === 0) {
-      alert('Insira alguma imagem do veículo')
+      toast.error('Insira pelo menos uma imagem do veículo!')
       return;
     }
 
@@ -122,7 +125,7 @@ export function NewCar() {
       .then(() => {
         reset();
         setCarImages([]);
-        console.log("CADASTRADO COM SUCESSO")
+        toast.success("Veículo cadastrado com sucesso!")
       })
       .catch((error) => {
         console.log(error)
