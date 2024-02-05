@@ -7,10 +7,10 @@ export function Header() {
 
   return (
     <header className="bg-white">
-      <nav className="mx-auto flex items-center justify-between p-3 px-8" aria-label="Global">
+      <nav className="mx-auto flex items-center justify-between p-1 px-8" aria-label="Global">
         <div className="flex lg:flex-1">
           <Link to="/" className="-m-1.5 p-1.5">
-            <img className="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="web-cars-logo" />
+            <img className="h-12 " src="/img/web-cars-logo.png" alt="web-cars-logo" />
           </Link>
         </div>
 

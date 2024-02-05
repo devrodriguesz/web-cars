@@ -65,7 +65,7 @@ export function Register() {
 
       <div className="w-3/5 h-full hidden lg:block">
         <img
-          src="/img/pattern.png"
+          src="/img/carros2.jpg"
           className="h-full w-full object-cover"
         />
       </div>
